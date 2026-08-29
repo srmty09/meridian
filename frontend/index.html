@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meridian</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>MERIDIAN</h1>
+    <p class="tagline">Learned LLM Router + Verified Semantic Cache</p>
+  </header>
+
+  <main>
+    <section class="chat">
+      <div class="chat-input">
+        <input id="prompt" type="text" placeholder="Ask something..." autocomplete="off" />
+        <button id="send">Send</button>
+      </div>
+
+      <div id="result" class="result hidden">
+        <div class="result-answer" id="answer"></div>
+        <div class="result-meta" id="meta"></div>
+      </div>
+
+      <div class="examples">
+        <span>Try:</span>
+        <button class="ex" data-q="What is 25 * 17?">cheap routing</button>
+        <button class="ex" data-q="What is the capital of France?">seed cache</button>
+        <button class="ex" data-q="Which city is the capital of France?">semantic hit</button>
+        <button class="ex" data-q="Is aspirin safe with warfarin?">seed safety</button>
+        <button class="ex" data-q="Is aspirin safe without warfarin?">verifier rejects</button>
+      </div>
+    </section>
+
+    <section class="dashboard">
+      <h2>Dashboard</h2>
+
+      <div class="cards">
+        <div class="card"><span class="label">Total Requests</span><span class="value" id="m_total">0</span></div>
+        <div class="card"><span class="label">Cache Hit Rate</span><span class="value" id="m_hitrate">0%</span></div>
+        <div class="card"><span class="label">Exact Cache Hits</span><span class="value" id="m_exact">0</span></div>
+        <div class="card"><span class="label">Semantic Cache Hits</span><span class="value" id="m_semantic">0</span></div>
+        <div class="card"><span class="label">Cache Misses</span><span class="value" id="m_misses">0</span></div>
+        <div class="card"><span class="label">Semantic False Hits</span><span class="value" id="m_false">0</span></div>
+      </div>
+
+      <h3>Routing Distribution</h3>
+      <div class="routing">
+        <div class="route-row">
+          <span class="route-name">Qwen 0.6B <em>small</em></span>
+          <div class="bar"><div class="bar-fill" id="bar_small"></div></div>
+          <span class="route-count" id="c_small">0</span>
+        </div>
+        <div class="route-row">
+          <span class="route-name">Qwen 1.7B <em>medium</em></span>
+          <div class="bar"><div class="bar-fill" id="bar_medium"></div></div>
+          <span class="route-count" id="c_medium">0</span>
+        </div>
+        <div class="route-row">
+          <span class="route-name">Qwen 8B <em>large</em></span>
+          <div class="bar"><div class="bar-fill" id="bar_large"></div></div>
+          <span class="route-count" id="c_large">0</span>
+        </div>
+      </div>
+
+      <h3>Cost <span class="hint">(estimated — demo pricing)</span></h3>
+      <div class="cards">
+        <div class="card"><span class="label">Estimated Cost</span><span class="value" id="m_cost">$0</span></div>
+        <div class="card"><span class="label">Baseline Cost (all 8B)</span><span class="value" id="m_baseline">$0</span></div>
+        <div class="card"><span class="label">Estimated Savings</span><span class="value" id="m_saved">$0</span></div>
+        <div class="card"><span class="label">Savings %</span><span class="value" id="m_savedpct">0%</span></div>
+        <div class="card"><span class="label">Avg Router Confidence</span><span class="value" id="m_conf">0</span></div>
+        <div class="card"><span class="label">Avg Latency</span><span class="value" id="m_latency">0 ms</span></div>
+      </div>
+
+      <h3>Verifier safety check</h3>
+      <p class="hint">Runs negation / entity-swap / different-quantity pairs through retrieval + the cross-encoder. Any verified hit is a false hit.</p>
+      <button id="run-adv">Run adversarial test</button>
+      <pre id="adv-out" class="adv-out hidden"></pre>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

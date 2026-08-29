@@ -1,0 +1,28 @@
+# Demo app dependencies. Works on Python 3.10 - 3.14.
+# Versions are floors (recent enough for 3.14 wheels); pip resolves the latest.
+
+# --- API / serving ---
+fastapi>=0.115
+uvicorn[standard]>=0.34
+pydantic>=2.10
+python-dotenv>=1.0
+
+# --- remote LLM inference (HF OpenAI-compatible router) ---
+openai>=1.59
+
+# --- exact cache (optional; falls back to an in-memory dict) ---
+redis>=5.2
+
+# --- local router model + semantic-cache models ---
+torch>=2.9                    # 2.9+ has cp313/cp314 wheels
+transformers>=4.51
+sentencepiece>=0.2.0          # deberta-v3 tokenizer
+sentence-transformers>=3.3    # dense retrieval embedder + cross-encoder verifier
+
+# --- semantic retrieval ---
+scikit-learn>=1.6             # TF-IDF
+rank-bm25>=0.2.2             # BM25
+numpy>=1.26                   # dense index is a plain matrix multiply (no FAISS)
+
+# The training notebook (training/meridian_training.ipynb) has its own
+# `%pip install` cell and is meant to run on Colab - nothing here is needed for it.
